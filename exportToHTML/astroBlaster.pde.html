@@ -1,0 +1,187 @@
+<html>
+<head>
+<title>astroBlaster.pde</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+astroBlaster.pde</font>
+</center></td></tr></table>
+<pre><span class="s0">//declare all variables</span>
+<span class="s0">//create arrayLists in the astroBlaster class for Lasers and Ships</span>
+<span class="s0">ArrayList &lt;Lasers&gt; ammo = new ArrayList &lt;Lasers&gt;();</span>
+<span class="s0">//ArrayList &lt;Ships&gt; shipsAliens = new ArrayList &lt;Ships&gt;();</span>
+<span class="s0">Ships[][] shipsAliens = new Ships[3][10];</span>
+<span class="s0">PImage back, alien, fight, laser, trans;</span>
+<span class="s0">SpaceShip fighter;</span>
+<span class="s0">Lasers pew;</span>
+<span class="s0">int xPos = 390;</span>
+<span class="s0">int yPos = 720;</span>
+<span class="s0">//boolean released = false;</span>
+<span class="s0">int i = 0;</span>
+<span class="s0">int index = 0;</span>
+<span class="s0">int row = 0;</span>
+<span class="s0">boolean okay =true;</span>
+<span class="s0">int shot = 0;</span>
+
+<span class="s0">//setup - initialize variables and screen</span>
+<span class="s0">void setup(){</span>
+  <span class="s0">//create screen</span>
+  <span class="s0">size(800, 800);</span>
+  <span class="s0">//initialize background image</span>
+  <span class="s0">back = loadImage(&quot;backgroundImage.png&quot;);</span>
+  <span class="s0">back.resize(1000,1000);</span>
+  <span class="s0">//create the spaceship as an object</span>
+  <span class="s0">alien = loadImage(&quot;alien1.png&quot;);</span>
+  <span class="s0">alien.resize(30, 30);</span>
+  <span class="s0">//fighter img</span>
+  <span class="s0">fight = loadImage(&quot;SpaceShip.png&quot;);</span>
+  <span class="s0">fight.resize(50, 50);</span>
+  <span class="s0">//laser img</span>
+  <span class="s0">laser = loadImage(&quot;LaserW.png&quot;);</span>
+  <span class="s0">laser.resize(20, 50);</span>
+  <span class="s0">//trans</span>
+  <span class="s0">trans = loadImage(&quot;trans.png&quot;);</span>
+  <span class="s0">trans.resize(20, 50);</span>
+  <span class="s0">fighter = new SpaceShip((double)7, (double)10, xPos, yPos ,fight);</span>
+  
+  <span class="s0">//ammo.add(pew);  //just to start the laser amo</span>
+  <span class="s0">//use arraylist to make spaceShip objects about 10 per row and 3 rows on top</span>
+  <span class="s0">for (int i = 0; i&lt;3; i++){</span>
+    <span class="s0">for (int x = 0; x&lt;10; x++){</span>
+      <span class="s0">//shipsAliens.add(new Ships((double)1, (double)10, 10, 10 ,alien));</span>
+      <span class="s0">shipsAliens[i][x] = new Ships((double)10, (double)10, 10, 10 ,alien);</span>
+    <span class="s0">}</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">/*while (i &lt;30){</span>
+    <span class="s0">shipsAliens.add(new Ships((double)1, (double)10, 10, 10 ,alien));</span>
+    <span class="s0">i++;</span>
+  <span class="s0">}*/</span>
+<span class="s0">}</span>
+
+  
+
+<span class="s0">//draw - call all methods </span>
+<span class="s0">void draw(){</span>
+   
+  <span class="s0">//set background image each time</span>
+  <span class="s0">image(back,-60,-70);</span>
+  <span class="s0">//display the spaceShip/aliens</span>
+  
+  <span class="s0">for (int i = 0; i&lt;3; i++){</span>
+    <span class="s0">for (int x = 0; x&lt;10; x++){</span>
+      <span class="s0">shipsAliens[i][x].display(x, i);</span>
+      <span class="s0">shipsAliens[i][x].move();</span>
+      
+    <span class="s0">Ships a = shipsAliens[i][index];  </span>
+    <span class="s0">for (int k = 0; k &lt; ammo.size(); k++) {</span>
+      <span class="s0">//(l.getXPos() - a.getXPos() &lt; 30 &amp;&amp; l.getXPos() - a.getXPos() &gt; 0 &amp;&amp; l.getYPos() - a.getYPos() &lt; 30 &amp;&amp; l.getYPos() - a.getYPos() &gt; 0)</span>
+      <span class="s0">//(l.getYPos() &lt;= a.getYPos()+30 &amp;&amp; a.getYPos() &lt;= l.getYPos()+30 ) &amp;&amp; (l.getXPos() &lt;= a.getXPos()+30 &amp;&amp; a.getXPos() &lt;= l.getXPos()+30 )</span>
+      <span class="s0">Lasers l = ammo.get(k);</span>
+      <span class="s0">if ((l.getYPos() &lt;= a.getYPos()+30 &amp;&amp; a.getYPos() &lt;= l.getYPos()+30 )  ){</span>
+        <span class="s0">shipsAliens[i][index].setImg(trans);</span>
+        <span class="s0">shot++;</span>
+        <span class="s0">ammo.remove(k);</span>
+        <span class="s0">index++;</span>
+        <span class="s0">//break;</span>
+      <span class="s0">}</span>
+      
+      <span class="s0">if(index&gt;9){</span>
+        <span class="s0">index = 0;</span>
+      <span class="s0">}</span>
+
+    <span class="s0">}</span>
+    <span class="s0">if (shipsAliens[i][x].getYPos()&gt; 200){</span>
+        <span class="s0">shipsAliens[i][x].stop();</span>
+        <span class="s0">fighter.stop();</span>
+        <span class="s0">okay = false;</span>
+      <span class="s0">}</span>
+    <span class="s0">System.out.println(shipsAliens[i][x].getYPos());</span>
+    
+    <span class="s0">}</span>
+  <span class="s0">}</span>
+  <span class="s0">//System.out.println(&quot;im out &quot;);</span>
+  <span class="s0">//tint(, 0, 0);</span>
+  <span class="s0">//l.getYPos() &lt;= a.getYPos()+30 &amp;&amp; a.getYPos() &lt;= l.getYPos()+30 </span>
+  <span class="s0">/*</span>
+  <span class="s0">for (int i = 0; i &lt; shipsAliens.size(); i++) {</span>
+    <span class="s0">shipsAliens.get(i).move();</span>
+      
+    <span class="s0">for (int k = 0; k &lt; ammo.size(); k++) {</span>
+      <span class="s0">//(l.getXPos() - a.getXPos() &lt; 30 &amp;&amp; l.getXPos() - a.getXPos() &gt; 0 &amp;&amp; l.getYPos() - a.getYPos() &lt; 30 &amp;&amp; l.getYPos() - a.getYPos() &gt; 0)</span>
+      <span class="s0">Ships a = shipsAliens.get(index);</span>
+      <span class="s0">Lasers l = ammo.get(k);</span>
+      <span class="s0">if (l.getYPos() &lt; 200){</span>
+        <span class="s0">a.setImg(laser);</span>
+        <span class="s0">ammo.remove(k);</span>
+        <span class="s0">index++;</span>
+        <span class="s0">//break;</span>
+      <span class="s0">}</span>
+    <span class="s0">}</span>
+  <span class="s0">}*/</span>
+  
+  <span class="s0">for (int i = 0; i&lt;3; i++){</span>
+    <span class="s0">for (int x = 0; x&lt;10; x++){</span>
+    <span class="s0">shipsAliens[i][x].safe();</span>
+  <span class="s0">}</span>
+  <span class="s0">}</span>
+  <span class="s0">//display the ships - look at ball class for example</span>
+  <span class="s0">//ammo.get(index).display();</span>
+  <span class="s0">fighter.display();</span>
+  
+  <span class="s0">for (Lasers bull : ammo){</span>
+    <span class="s0">bull.display();</span>
+    <span class="s0">bull.moveU(); </span>
+  <span class="s0">}</span>
+  
+ 
+
+  <span class="s0">/*</span>
+  <span class="s0">okay so basically, boolean released is an instance of the lasers class, and when space released, that instance is set to true. When it is, it displays THAT INDEX OF THE AMMO/LASERS </span>
+  <span class="s0">ARRAY and moves it. Then it also adds another object to the array while upping the index. Then, it's supposed to do the same thing but with the next object but it's not :(</span>
+  <span class="s0">*/</span>
+  
+  <span class="s0">//update the ships to move from left to right make sure they don't leave the edges</span>
+  <span class="s0">//shoot laser based off of spacebar</span>
+  <span class="s0">//update laser position</span>
+  <span class="s0">textSize(38);</span>
+  <span class="s0">color(255,255,255);</span>
+  <span class="s0">text(&quot;ALIENS SHOT: &quot; + shot, 20, 30);</span>
+<span class="s0">}</span>
+
+<span class="s0">//update spaceShip by a and d buttons - use keyPressed function https://processing.org/reference/keyPressed_.html?scrlybrkr=56711ebf </span>
+<span class="s0">//void keyPressed(){} - uncomment does not need to be called</span>
+<span class="s0">void keyPressed() {</span>
+    <span class="s0">if (key == 'd') {</span>
+      <span class="s0">fighter.moveR();</span>
+      <span class="s0">//pew.moveR();</span>
+    <span class="s0">}</span>
+    <span class="s0">if (key == 'a') {</span>
+      <span class="s0">fighter.moveL();</span>
+      <span class="s0">//pew.moveL();</span>
+    <span class="s0">}</span>
+  <span class="s0">}</span>
+  
+<span class="s0">void keyReleased() {</span>
+  <span class="s0">if (key == ' ' &amp;&amp; okay) {</span>
+    <span class="s0">ammo.add(new Lasers((double)10, (double)10, fighter.getXPos()+15, fighter.getYPos() ,laser));</span>
+  <span class="s0">}</span>
+<span class="s0">}</span>
+      
+
+<span class="s0">//create laser when spaceBar is released - https://processing.org/reference/keyReleased_.html </span>
+<span class="s0">//void keyReleased(){} - uncomment does not need to be called</span>
+<span class="s0">//create a collision method in astroblaster that checks to see if the laser x,y position come into the same area as one of the ships - collision needs to be called</span>
+<span class="s0">//if it comes into contact delete the ship and the laser</span>
+<span class="s0">//if laser reaches y = 0 delete from the arrayList</span>
+
+ 
+</pre>
+</body>
+</html>

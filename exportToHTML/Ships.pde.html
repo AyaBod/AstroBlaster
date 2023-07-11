@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Ships.pde</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Ships.pde</font>
+</center></td></tr></table>
+<pre><span class="s0">//extends movement class with x position and y position should be a constant</span>
+<span class="s0">//create a constructor for the ships that uses movement for the x and y position and the speeds</span>
+<span class="s0">//constructor will import the image of your ship</span>
+<span class="s0">//have update function for left and update right for movements</span>
+
+<span class="s0">class Ships extends Movement{</span>
+  <span class="s0">PImage ship;</span>
+  <span class="s0">public Ships(double xS, double yS, int xPos, int yPos, PImage ship){</span>
+    <span class="s0">super(xS, yS, xPos, yPos);</span>
+    <span class="s0">this.ship = ship;</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">void move(){</span>
+    
+    <span class="s0">xPos += xSpeed;</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">public void safe(){</span>
+    <span class="s0">if (xPos &gt; width-390 || xPos &lt; 0){</span>
+      <span class="s0">xSpeed *= -1;</span>
+      <span class="s0">yPos += ySpeed;</span>
+    <span class="s0">}</span>
+  <span class="s0">}</span>
+  
+  
+  <span class="s0">void display(int x, int i){</span>
+    <span class="s0">image(ship, xPos + x*40,yPos +i*60 + 50);</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">void clear(){</span>
+    <span class="s0">tint(255, 128);</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">void setImg (PImage img){</span>
+    <span class="s0">ship = img;</span>
+  <span class="s0">}</span>
+  
+  <span class="s0">void stop(){</span>
+     <span class="s0">ySpeed = 0;</span>
+     <span class="s0">xSpeed = 0;</span>
+     <span class="s0">xPos = 200;</span>
+
+  <span class="s0">}</span>
+  
+ 
+  
+  
+  
+<span class="s0">}</span>
+</pre>
+</body>
+</html>
